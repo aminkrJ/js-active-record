@@ -1,0 +1,22 @@
+{
+  "name": "js-active-record",
+  "version": "1.0.0",
+  "description": "Firestore active record",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aminkrJ/js-active-record.git"
+  },
+  "author": "Amin Karaji",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aminkrJ/js-active-record/issues"
+  },
+  "homepage": "https://github.com/aminkrJ/js-active-record#readme",
+  "dependencies": {
+    "firebase-admin": "^9.0.0"
+  }
+}
