@@ -1,8 +1,8 @@
-#Firestore Model Library
+# Firestore Model Library
 ActiveRecord implemenation in JS for Firestore.
 
-##Overview
-###Quick Start
+## Overview
+### Quick Start
 ```javascript
 jsActiveModel.configure({ db })
 const Model = jsActiveModel.Model
@@ -29,13 +29,13 @@ tenantModel.set({})
 // delete all the documents in a collection
 tenantModel.deleteAll()
 ```
-##Chaining
+## Chaining
 ```javascript
 complexQuery.update({}).update({}).run()
 ```
-##Transactions
+## Transactions
 
-##Multi-tenancy
+## Multi-tenancy
 It generates methods to set foreign keys if there are foreign keys with
 nameId format.
 ```javascript
@@ -51,7 +51,7 @@ userCourses.SetUserId('aminkrj')
 // returns all courses for aminkrj in learnt tenant
 userCourseModel.findAll()
 ```
-##Schema
+## Schema
 You need to create a doc with the id of `schema-collection_name` it
 automatically read the document and build a schema.
 ```javascript
