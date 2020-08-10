@@ -4,7 +4,7 @@
   "description": "Firestore active record",
   "main": "index.js",
   "scripts": {
-    "test": "npm run tests",
+    "test": "node --inspect-brk ./node_modules/jest/bin/jest.js --watch --runInBand",
     "play": "export FIRESTORE_EMULATOR_HOST='localhost:8080' && node playground.js"
   },
   "repository": {
@@ -19,5 +19,10 @@
   "homepage": "https://github.com/aminkrJ/js-active-record#readme",
   "dependencies": {
     "firebase-admin": "^9.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.3.0"
   }
 }
