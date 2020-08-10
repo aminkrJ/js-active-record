@@ -4,7 +4,8 @@
   "description": "Firestore active record",
   "main": "index.js",
   "scripts": {
-    "test": "npm run tests"
+    "test": "npm run tests",
+    "play": "export FIRESTORE_EMULATOR_HOST='localhost:8080' && node playground.js"
   },
   "repository": {
     "type": "git",

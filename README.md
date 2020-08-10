@@ -1,63 +1,49 @@
 # Firestore Model Library
-ActiveRecord implemenation in JS for Firestore.
+ActiveRecord implemenation in JS for Firestore inspired by RoR ActiveRecord.
 
 ## Overview
-### Quick Start
+## Inistallation
+```sh
+$ npm install js-active-record
+```
+## Initialization
 ```javascript
 jsActiveModel.configure({ db })
 const Model = jsActiveModel.Model
 const tenantModel = new Model('tenants')
-const first = tenantModel.findFirst(documentId)
-const complexQuery = tenantModel.where("id", "==", "learnt")
+```
+## FindBy
+Find all records by [schema](#schema) fields.
+```javascript
+const tenant = tenantModel.findById(documentId)
+const activeTenants = tenantModel.findByStatus('active')
+// support firestore API 
+const snap = tenantModel
+           .where("id", "in", ['learnt', 'munro'])
            .where("teams", ">", 1000)
            .order("updatedAt", "DESC")
-           .limit(100)
-           .offset(0)
-const inClause = tenantModel.where("id", "in", ['learnt',
-'munro'])
-const count = tenantModel.where("teams", ">", 10).count()
-first.findFirst().exists
-first.findFirst().doc
-complexQuery.findAll().size
-complexQuery.findAll().docs
-first.update({})
-// delete fields
-first.delete([])
-complexQuery.update({})
-// it returns the created doc
-tenantModel.set({})
-// delete all the documents in a collection
-tenantModel.deleteAll()
+snap.get().size
+snap.get().docs
+// distributed counter
+tenantModel.teams.count()
 ```
-## Chaining
-```javascript
-complexQuery.update({}).update({}).run()
-```
-## Transactions
-
-## Multi-tenancy
-It generates methods to set foreign keys if there are foreign keys with
-nameId format.
+## Has-many relationship
 ```javascript
 // set your tenants once in the model
-const courseModel = new Model('courses')
-courseModel.tenant = 'learnt'
-// returns all courses in a learnt tenant
-courseModel.findAll() 
-
-const userCourseModel = new Model('userCourses')
-userCourses.setTenantId('learnt')
-userCourses.SetUserId('aminkrj')
-// returns all courses for aminkrj in learnt tenant
-userCourseModel.findAll()
+const tenant = tenantModel.findById('document-id')
+tenant.teams.get()
+tenant.teams.findById('team-id').users.get()
 ```
-## Schema
-You need to create a doc with the id of `schema-collection_name` it
-automatically read the document and build a schema.
+## <a name="schema"></a> Schema
+We need to reserve a doc with the id of `SCHEMA-collection_name`. When
+creating a new instance of a model, it initialise the instance with the
+schema.
 ```javascript
 const tenantModel = new Model('tenants')
-const newDoc = tenantModel.newDoc({}) // without an id
-const newDocWithId = tenantModel.newDoc("new-id", {}) // with an id
+const docs = tenantModel.docs
+docs.new({
+  id: 'new-id' // override the default value
+}) 
 ```
 
 

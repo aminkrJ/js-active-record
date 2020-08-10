@@ -9,4 +9,5 @@ admin.initializeApp({
 const db = admin.firestore();
 
 db.collection('cities').doc('Sydney').set({
+  name: 'Sydney'
 }).then(resp => console.log(resp))
