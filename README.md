@@ -1,5 +1,5 @@
 # Firestore Model Library
-ActiveRecord implemenation in JS for Firestore inspired by RoR ActiveRecord.
+ActiveRecord implemenation in JS for Firestore inspired by RoR ActiveRecord and associations.
 
 ## Overview
 ## Inistallation
@@ -8,31 +8,47 @@ $ npm install js-active-record
 ```
 ## Initialization
 ```javascript
-jsActiveModel.configure({ db })
-const Model = jsActiveModel.Model
-const tenantModel = new Model('tenants')
+jsActiveRecord.configure({ db, tenant })
 ```
 ## FindBy
 Find all records by [schema](#schema) fields.
 ```javascript
-const tenant = tenantModel.findById(documentId)
-const activeTenants = tenantModel.findByStatus('active')
+model.findBy('schemaField', value)
 // support firestore API 
-const snap = tenantModel
-           .where("id", "in", ['learnt', 'munro'])
-           .where("teams", ">", 1000)
-           .order("updatedAt", "DESC")
-snap.get().size
+model
+  .where("id", "in", ['learnt', 'munro'])
+  .where("teams", ">", 1000)
+  .order("updatedAt", "DESC")
 snap.get().docs
-// distributed counter
-tenantModel.teams.count()
 ```
-## Has-many relationship
+## Associations
+### One-to-Many
+#### One-to-Billions
+This relationship is implemented using two collections with a foreign key. Suppose, we have tenant with billions of members. We dedicate two collections one for tenants and one for members with tenantId as a foreign key.
 ```javascript
-// set your tenants once in the model
-const tenant = tenantModel.findById('document-id')
-tenant.teams.get()
-tenant.teams.findById('team-id').users.get()
+// models/Tenant.js
+function Tenant() {
+  this.members = this.HasMany(Member)
+  this.collection = 'tenants'
+}
+module.exports = jsActiveRecord.Model(Tenant)
+
+// models/Member.js
+function Member() {
+  this.tenant = this.BelongsTo(Tenant)
+  this.collection = 'members'
+}
+module.exports = jsActiveRecord.Model(Tenant)
+
+const tenantModel = new Tenant()
+const sampleTenant = tenantModel.findBy('title', 'sample')
+sampleTenant.members.get() // returns all the members for a tenant with the title of sample
+```
+
+## Multi-tenancy
+configure your queries to just get records from a specific tenant.
+```javascript
+jsActiveRecord.configure({ db, tenant })
 ```
 ## <a name="schema"></a> Schema
 We need to reserve a doc with the id of `SCHEMA-collection_name`. When
